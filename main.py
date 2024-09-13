@@ -1,5 +1,5 @@
 import random
-
+from general import locations, stats, enemies
 
 DIRECTIONS = {"n", "w", "s", "e"}
 LOCATIONS = {"Forest", "Castle", "Dungeon", "House", "River", "Lake"}
@@ -11,6 +11,8 @@ def start():
     else:
         print("As you wish")
         quit()
+    stats.set_stats()
+    stats.show_stas()
 
 def where_to() -> str:
     while True:
@@ -45,4 +47,7 @@ def is_sword_here() -> bool | int:
 def main():
     start()
     where_to()
+    position = locations.whats_around_you()
+    locations.can_you_find_item(position)
+    
 main()
