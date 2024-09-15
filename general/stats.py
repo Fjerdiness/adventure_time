@@ -10,41 +10,38 @@ class Stats:
         self.description = description
 
     def __repr__(self):
-        return f"{self.name}: {self.amount_of_points_in} ({self.description})"
+        return f"{self.amount_of_points_in} ({self.description})"
     
-luck = Stats("Luck", {MIN_SKILL_VALUE}, "How lucky are you")
-strength = Stats("Strength", {MIN_SKILL_VALUE}, "How strong are you")
-intelligence = Stats("Intelligence", {MIN_SKILL_VALUE}, "How smart are you")
-agility = Stats("Agility", {MIN_SKILL_VALUE}, "How agile are you")
-
-stats_list = [luck, strength, intelligence, agility]
+stats_dict = {
+    "luck": Stats("Luck", MIN_SKILL_VALUE, "Amount of gold, potions, critical damages etc"),
+    "strength": Stats("Strength", MIN_SKILL_VALUE, "Damage from weapon and HP"),
+    "intelligence": Stats("Intelligence", MIN_SKILL_VALUE, "Mana points"),
+    "agility": Stats("Agility", MIN_SKILL_VALUE, "Lowering damage taken")
+}
 
 def set_stats() -> int:
     skill_points = SKILL_POINTS
     max_skill_value = MAX_SKILL_VALUE
-    for index, stat in enumerate(stats_list):
+    print(stats_dict)  # Show the initial stats
+    
+    for key, value in stats_dict.items(): 
         while True:
             try:
-                skill_value = int(input(f"""
-Input digit {MIN_SKILL_VALUE} - {max_skill_value} to set it for 
-{stat.name} ({stat.description})
-{skill_points} skill points left
-"""))
-                if MIN_SKILL_VALUE <= skill_value <= max_skill_value:
-                    skill_points -= skill_value
-                    stats_list[index].amount_of_points_in = skill_value
-                    if skill_points <= max_skill_value: 
-                        max_skill_value = skill_points
+                skill_point_input = int(input(f"Enter the amount of skill points for {value.name} ({value.description}). {skill_points} skill points are available: "))
+                if 0 <= skill_point_input <= skill_points and 0 <= skill_point_input <= max_skill_value:
+                    stats_dict[key] = Stats(value.name, skill_point_input, value.description)
+                    skill_points -= skill_point_input
+                    if skill_points < 0:
+                        print("Not enough skill points available.")
+                        break
+                    max_skill_value = skill_points
                     break
                 else:
-                    print("")
-                    print(f"Please input value from {MIN_SKILL_VALUE} to {max_skill_value}")
+                    print(f"Please input a value between 0 and {min(skill_points, max_skill_value)}.")
             except ValueError:
-                print("Wrong value, retry")
-                continue
-    
+                print("Invalid input. Please enter an integer value.")
+
 def show_stats(): 
-    for stat in stats_list:
-        print(f"""
-So, your final stats are: {stat.name} {stat.amount_of_points_in}              
-""")
+    print("So, your final stats are:")
+    for key, value in stats_dict.items():
+        print(f"{key.capitalize()}: {value.amount_of_points_in} ({value.description})")

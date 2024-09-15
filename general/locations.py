@@ -1,65 +1,53 @@
 import random
 import sys
-from general import actions, inventory, stats, inventory
+
+from general.tuples import items
+from . import actions, stats, inventory
 
 class Locations:
 
-    def __init__(self, name: str, enemies: str, description: str, treasures: str) -> None:
+    def __init__(self, name: str, enemies: str, description: str, treasures_list: list[str, int, str]) -> None:
         self.name = name
         self.enemies = enemies
         self.description = description
-        self.treasures = treasures
+        self.treasures_list = treasures_list
 
-    def __repr__(self):
-        return f"{self.name}: {self.enemies} ({self.description})"
+    def __repr__(self) -> str:
+        treasures_str = ', '.join(f"{name} (Quantity: {quantity}, Type: {type_})" for name, quantity, type_ in self.treasures_list)
+        return f"Location(name={self.name}, enemies={self.enemies}, description={self.description}, treasures=[{treasures_str}])"
 
-forest = Locations("Forest", "Orc", "Its dark here", None)
-castle = Locations("Castle", "Old guard", "You can feel thousands of years of history here", "Sword")
-dungeon = Locations("Dungeon", "Dragon", "Skeleton in chain looking at you", "Skeleton_hand")
-house = Locations("House", None, "Just cozy house with nothing really useful inside of it", "Fork")
-river = Locations("River", "Siren", "Beatiful song is calling you to swim in waters", "Shield")
-lake = Locations("Lake", "Merman", "You can fish here if you want", "Fish")
+# sword = Weapons("Sword", 10, "Sharp")
+    
+locations_dict = {
+    "forest" : Locations("Forest", "Orc", "its dark here", None),
+    "castle" : Locations("Castle", "Old guard", "you can feel thousands of years of history here", None),
+    "dungeon" : Locations("Dungeon", "Dragon", "skeleton in chain is looking at you", None),
+    "house" : Locations("House", None, "just cozy house with nothing really useful inside of it", None),
+    "river" : Locations("River", "Siren", "beatiful song is calling you to swim in waters", None),
+    "lake" : Locations("Lake", "Merman", "you can fish here if you want", None),
+}
 
-LOCATIONS = [forest, castle, dungeon, house, river, lake]
+def select_location() -> str:
+    location = random.choice(list(locations_dict.keys()))
+    return location
 
-def whats_around_you() -> int:
-    random_position = random.randrange(0, len(LOCATIONS))
-    print(f"""You`re at {LOCATIONS[random_position].name}.
-{LOCATIONS[random_position].description}
+def whats_around_you(user_input: str) -> None:
+    if user_input in locations_dict:
+        location = locations_dict[user_input]
+        print(f"""You're at {location.name} {location.description}
 """)
-    return random_position
+    else:
+        print("Location not found.")
 
-def is_should_search(position) -> None:
-    if str(input("Do you wanna to search here for item? ") == "y"):
-        can_you_find_an_item(position)
+def is_should_search() -> None:
+    input_str = input(f"Do you wanna to search here for item? {list(actions.yes_no_dict.keys())} ")
+    if input_str == actions.yes_no_dict["yes"].name:
+        items.can_you_find_an_item()
     else: 
         print("Ok, moving further then")
-    
-def can_you_find_an_item(position: int) -> bool:
-    is_sword_here()
-    if not LOCATIONS[position].treasures == None:
-        probability = stats.luck.amount_of_points_in * 4 + random.randint(0, 100)
-        gold_amount = random.randint(0, 100)
-        if 75 < probability <= 100:
-            print(f"Great success! You`ve found {LOCATIONS[position].treasures} And {gold_amount}g gold near it")
-            items = [LOCATIONS[position].treasures, gold_amount]
-            inventory.add_items_to_inventory(items)
-            actions.what_to_do()
-        elif 25 < probability <= 75:
-            print(f"Not so great success, but still ok. You`ve found {LOCATIONS[position].treasures}")
-            print(f"{LOCATIONS[position].treasures} was added to your inventory")
-            items = [LOCATIONS[position].treasures, gold_amount]
-            inventory.add_items_to_inventory(items)
-            actions.what_to_do()
-        elif probability <= 25:
-            print(f"Critical failure and now you are dead")
-            sys.exit()
-    else:
-        print("There are no items around here for sure, stop looking")
-        actions.what_to_do()
 
 def is_sword_here() -> bool:
-    probability = stats.luck.amount_of_points_in * 2 + random.randint(0, 100)
+    probability = stats.stats_dict['luck'].amount_of_points_in * 2 + random.randint(0, 100)
     if probability >= 500:
         print("Gratz! You`ve found legendary sword and won!")
         sys.exit()

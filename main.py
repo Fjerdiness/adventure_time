@@ -1,28 +1,14 @@
-import random
-import sys
-from general import actions, locations, stats, enemies
+from general import actions
+from general import stats
 
-
-
-def start():
-    user_input = str(input("Hello. Do you wanna to play? y/n ")).lower().strip()
-    if user_input == "y":
-        print("Nice, lets go!")
-    elif user_input == "n":
-        print("As you wish")
-        sys.exit()
-    else:
-        print("wrong input, retry")
-        start()
-    stats.set_stats()
-    stats.show_stats()
 
 def main():
-    start()
-    actions.what_to_do()
+    actions.input_to_play()
+    stats.set_stats()
+    stats.show_stats()
     while True:
-        position = locations.whats_around_you()
-        locations.is_should_search(position)
+        where_to = actions.what_to_do()
+        actions.process_user_input(where_to)
 
 
 if __name__ == "__main__":

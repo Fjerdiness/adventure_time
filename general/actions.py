@@ -1,3 +1,6 @@
+import sys
+from . import inventory, locations
+
 
 class Actions:
     def __init__(self, name: str) -> None:
@@ -6,20 +9,50 @@ class Actions:
     def __repr__(self):
         return f"{self.name}"
 
-go_west = Actions("west")
-go_east = Actions("east")
-go_north = Actions("north")
-go_south = Actions("south")
-go_to_inventory = Actions("inventory")
-# go_to_char_stats = Actions("Not implemented yet")
+actions_dict = {
+    "west": Actions("west"),
+    "east": Actions("east"),
+    "north": Actions("north"),
+    "south": Actions("south"),
+    "inventory": Actions("inventory"),
+    "stop": Actions("stop"),
+}
 
-actions = [go_west.name, go_east.name, go_north.name, go_south.name, go_to_inventory]
+yes_no_dict = {
+     "yes": Actions("yes"),
+     "no": Actions("no"),
+}
+
+def input_to_play():
+    user_input = str(input(f"Hello. Do you wanna to play? {list(yes_no_dict.keys())} ")).lower().strip()
+    if user_input == yes_no_dict["yes"].name:
+        print("Nice, lets go!")
+    elif user_input == yes_no_dict["no"].name:
+        print("As you wish")
+        sys.exit()
+    else:
+        print("wrong input, retry")
+        input_to_play()
 
 def what_to_do() -> str:
-    while True:
-        user_input = str(input(f"Where do you wanna go? {actions} ")).strip().lower()
-        if user_input in actions:
+        user_input = str(input(f"Where do you wanna go? {list(actions_dict.keys())} ")).strip().lower()
+        if user_input in actions_dict:
             return user_input
         else:
             print("Wrong input. Retry.")
-            continue
+            what_to_do()
+
+def process_user_input(where_to):
+
+        if where_to == actions_dict["inventory"].name:
+            inventory.check_inventory()
+        elif where_to in [actions_dict["east"].name, actions_dict["north"].name, actions_dict["south"].name, actions_dict["west"].name]:
+            location = locations.select_location()
+            locations.whats_around_you(location)
+            locations.is_should_search()
+        elif where_to == "stop":
+            print(f"Bye-bye! Have a nice day!")
+            sys.exit()
+        else:
+            print("Invalid action, please retry")
+            process_user_input()
