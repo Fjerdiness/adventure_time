@@ -1,6 +1,7 @@
 
 import random
 from general.tuples import items
+from general import stats
 
 
 class NPCs:
@@ -64,3 +65,9 @@ def get_NPC():
     npc_of_select = npc_dict.get(key)
     print(npc_of_select.name)
     return npc_of_select
+
+def attack_npc() -> int:
+    npc = get_NPC()
+    weapon_dmg = items.get_item('weapon').damage
+    player_dmg = stats.stats_dict['strength'].amount_of_points_in * 4 + weapon_dmg
+    return npc.hit_points - player_dmg

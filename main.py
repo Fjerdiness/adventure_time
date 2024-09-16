@@ -1,10 +1,10 @@
-from general import enemies
-from general import actions
-from general import stats
+from general import npcs
+# from general import actions
+# from general import stats
 
 
 def main():
-    enemies.get_NPC()
+    print(npcs.attack_npc())
     # actions.input_to_play()
     # stats.set_stats()
     # stats.show_stats()
