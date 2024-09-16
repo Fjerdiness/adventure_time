@@ -63,7 +63,6 @@ def get_npc_name() -> str:
 def get_npc():
     key = get_npc_name()
     npc = npc_dict.get(key)
-    print(npc.name)
     return npc
 
 def get_npc_armor_points(npc: NPCs) -> int:
@@ -71,12 +70,13 @@ def get_npc_armor_points(npc: NPCs) -> int:
     for item in npc.items:
         if isinstance(item, items.Armor):
             points += item.armor_points
-    print(f"NPC AP: {points}")
     return points
 
 
 def player_attack_npc(npc: NPCs) -> int:
-    weapon_dmg = items.get_item('weapon').damage
+    weapon = items.get_item('weapon')
+    weapon_dmg = weapon.damage
+    weapon_name = weapon.name
     player_dmg = stats.stats_dict['strength'].amount_of_points_in * 4 + weapon_dmg
     npc_armor_points = get_npc_armor_points(npc)
-    return f"{npc.name}{npc.hit_points - int(player_dmg / npc_armor_points)}"
+    return f"{npc.name} with {npc_armor_points} AP got hit by {player_dmg} damage with {weapon_name} and now have {npc.hit_points - int(player_dmg / npc_armor_points)} HP left"
