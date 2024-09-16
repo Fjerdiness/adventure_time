@@ -4,7 +4,8 @@ from general import npcs
 
 
 def main():
-    print(npcs.attack_npc())
+    npc = npcs.get_npc()
+    print(npcs.player_attack_npc(npc))
     # actions.input_to_play()
     # stats.set_stats()
     # stats.show_stats()

@@ -57,17 +57,26 @@ npc_dict = {
     ),
 }
 
-def get_NPC_name() -> str:
+def get_npc_name() -> str:
     return random.choice(list(npc_dict.keys()))
 
-def get_NPC():
-    key = get_NPC_name()
-    npc_of_select = npc_dict.get(key)
-    print(npc_of_select.name)
-    return npc_of_select
+def get_npc():
+    key = get_npc_name()
+    npc = npc_dict.get(key)
+    print(npc.name)
+    return npc
 
-def attack_npc() -> int:
-    npc = get_NPC()
+def get_npc_armor_points(npc: NPCs) -> int:
+    points = 1
+    for item in npc.items:
+        if isinstance(item, items.Armor):
+            points += item.armor_points
+    print(f"NPC AP: {points}")
+    return points
+
+
+def player_attack_npc(npc: NPCs) -> int:
     weapon_dmg = items.get_item('weapon').damage
     player_dmg = stats.stats_dict['strength'].amount_of_points_in * 4 + weapon_dmg
-    return npc.hit_points - player_dmg
+    npc_armor_points = get_npc_armor_points(npc)
+    return f"{npc.name}{npc.hit_points - int(player_dmg / npc_armor_points)}"
