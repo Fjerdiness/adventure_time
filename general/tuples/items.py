@@ -21,6 +21,7 @@ class Currency(Item):
     def __repr__(self) -> str | int:
         return f"Currency: {self.name}, Amount: {self.amount}{self.shortened_name}"
 
+
 class Weapons(Item):
     def __init__(self, name: str, damage: int, weapon_type: str):
         super().__init__(name)
@@ -29,6 +30,17 @@ class Weapons(Item):
 
     def __repr__(self) -> int | str:
         return f"Weapon: {self.name}, Type: {self.weapon_type}, Damage: {self.damage}"
+    
+class Armor(Item):
+    def __init__(self, name: str, body_part: str, armor_points: int, armor_type: str) -> None:
+        super().__init__(name)
+        self.body_part = body_part
+        self.armor_points = armor_points
+        self.armor_type = armor_type
+
+    def __repr__(self) -> str:
+        return f"{self.armor_type} {self.name}, For {self.body_part}, Gives {self.armor_points} armor points"
+
 
 class Potions(Item):
     def __init__(self, name: str, effect: str, quantity: int) -> None:
@@ -38,7 +50,7 @@ class Potions(Item):
 
     def __repr__(self) -> str | int:
         return f"Potion: {self.name}, Effect: {self.effect}, Quantity: {self.quantity}"
-    
+
 class Others(Item):
     def __init__(self, name: str, effect: str) -> None:
         super().__init__(name)
@@ -82,10 +94,41 @@ potions_dict = {
     'Mystic Potion': Potions("Mystic Potion", "Grants Magic Power", 2),
 }
 
+armor_dict = {
+    # Heavy Armor
+    'Steel Shield': Armor("Steel Shield", "Shield", 5, "Heavy"),
+    'Iron Helmet': Armor("Iron Helmet", "Head", 3, "Heavy"),
+    'Dragon Scale Armor': Armor("Dragon Scale Armor", "Body", 10, "Heavy"),
+    'Heavy Plate Shield': Armor("Heavy Plate Shield", "Shield", 7, "Heavy"),
+    'Steel Pauldrons': Armor("Steel Pauldrons", "Shoulders", 4, "Heavy"),
+    'Golden Breastplate': Armor("Golden Breastplate", "Body", 8, "Heavy"),
+    'Plate Leggings': Armor("Plate Leggings", "Legs", 7, "Heavy"),
+    'Rune-etched Shield': Armor("Rune-etched Shield", "Shield", 8, "Heavy"),
+    
+    # Medium Armor
+    'Leather Chestplate': Armor("Leather Chestplate", "Body", 6, "Medium"),
+    'Chainmail Sleeves': Armor("Chainmail Sleeves", "Arms", 4, "Medium"),
+    'Iron Greaves': Armor("Iron Greaves", "Legs", 5, "Medium"),
+    'Plated Helmet': Armor("Plated Helmet", "Head", 5, "Medium"),
+    'Mystic Shield': Armor("Mystic Shield", "Shield", 5, "Medium"),
+    'Chainmail Vest': Armor("Chainmail Vest", "Body", 7, "Medium"),
+    'Reinforced Leggings': Armor("Reinforced Leggings", "Legs", 6, "Medium"),
+    'Iron Bracers': Armor("Iron Bracers", "Arms", 4, "Medium"),
+    
+    # Light Armor
+    'Elven Boots': Armor("Elven Boots", "Legs", 2, "Light"),
+    'Woolen Gloves': Armor("Woolen Gloves", "Gloves", 1, "Light"),
+    'Mage Robe': Armor("Mage Robe", "Body", 2, "Light"),
+    'Leather Gloves': Armor("Leather Gloves", "Gloves", 2, "Light"),
+    'Elven Helm': Armor("Elven Helm", "Head", 4, "Light"),
+    'Mystic Gauntlets': Armor("Mystic Gauntlets", "Gloves", 3, "Light"),
+    'Leather Helm': Armor("Leather Helm", "Head", 2, "Light"),
+    'Gilded Gauntlets': Armor("Gilded Gauntlets", "Gloves", 5, "Light"),
+    'Steel Boots': Armor("Steel Boots", "Legs", 3, "Light"),
+}
 
 others_dict = {
     'Torch': Others("Torch", "Lighting surroundings"),
-    'Steel Shield': Others("Steel Shield", "Defensive Shield"),
     'Dragon Scale': Others("Dragon Scale", "Rare Material"),
     'Magic Scroll': Others("Magic Scroll", "Contains Spell"),
     'Cursed Amulet': Others("Cursed Amulet", "Cursed Item"),
@@ -103,11 +146,14 @@ gold_dict = {
     'Gold': Currency("Gold", "g", 0),
 }
 
+
+
 dictionaries = {
     'weapon': weapons_dict,
     'potion': potions_dict,
     'other': others_dict,
-    'gold': gold_dict
+    'armor': armor_dict,
+    'gold': gold_dict,
 }
 
 def get_item_name(dict_type: str) -> str:

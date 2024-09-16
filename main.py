@@ -1,14 +1,16 @@
+from general import enemies
 from general import actions
 from general import stats
 
 
 def main():
-    actions.input_to_play()
-    stats.set_stats()
-    stats.show_stats()
-    while True:
-        where_to = actions.what_to_do()
-        actions.process_user_input(where_to)
+    enemies.get_NPC()
+    # actions.input_to_play()
+    # stats.set_stats()
+    # stats.show_stats()
+    # while True:
+    #     where_to = actions.what_to_do()
+    #     actions.process_user_input(where_to)
 
 
 if __name__ == "__main__":

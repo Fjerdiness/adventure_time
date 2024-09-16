@@ -1,39 +1,66 @@
-MAX_SKILL_VALUE = 10
 
-class Stats:
+import random
+from general.tuples import items
 
-    def __init__(self, name: str, amount_of_points_in: int, description: str) -> None:
+
+class NPCs:
+    def __init__(self, 
+                 name: str, 
+                 hit_points: int, 
+                 mana_points: int,
+                 armor: int,
+                 hostility: int,
+                 items: list,
+                 ) -> None:
+        
         self.name = name
-        self.amount_of_points_in = amount_of_points_in
-        self.description = description
+        self.hit_points = hit_points
+        self.mana_points = mana_points
+        self.armor = armor
+        self.hostility = hostility
+        self.items = items
 
-    def __repr__(self):
-        return f"{self.name}: {self.amount_of_points_in} ({self.description})"
+# Define the NPCs
+npc_dict = {
+    'Gorath': NPCs(
+        name="Gorath",
+        hit_points=120,
+        mana_points=30,
+        armor=15,
+        hostility=80,
+        items=[items.get_item('weapon'), items.get_item('armor')]
+    ),
+    'Eldara': NPCs(
+        name="Eldara",
+        hit_points=100,
+        mana_points=50,
+        armor=5,
+        hostility=30,
+        items=[items.get_item('weapon')]
+    ),
+    'Thorin': NPCs(
+        name="Thorin",
+        hit_points=150,
+        mana_points=10,
+        armor=20,
+        hostility=60,
+        items=[items.get_item('weapon'), items.get_item('armor'), items.get_item('armor'), items.get_item('armor')]
+    ),
+    'Lyra': NPCs(
+        name="Lyra",
+        hit_points=90,
+        mana_points=70,
+        armor=8,
+        hostility=20,
+        items=[items.get_item('potion') for _ in range(20)]
+    ),
+}
 
-luck = Stats("Luck", 1, "How lucky are you")
-strength = Stats("Strength", 1, "How strong are you")
-intelligence = Stats("Intelligence", 1, "How smart are you")
-agility = Stats("Agility", 1, "How agile are you")
+def get_NPC_name() -> str:
+    return random.choice(list(npc_dict.keys()))
 
-stats_list = [luck, strength, intelligence, agility]
-
-def set_stats() -> int:
-    for index, stat in enumerate(stats_list):
-        while True:
-            try:
-                skill_value = int(input(f"""
-Input digit 0 - 10 to set it for 
-{stat.name} ({stat.description})
-"""))
-                if 0 < skill_value < MAX_SKILL_VALUE:
-                    stats_list[index].amount_of_points_in = skill_value
-                    break
-            except ValueError:
-                print("Wrong value, retry")
-                continue
-    
-def show_stas(): 
-    for stat in stats_list:
-        print(f"""
-So, your final stats are: {stat.name} {stat.amount_of_points_in}              
-""")
+def get_NPC():
+    key = get_NPC_name()
+    npc_of_select = npc_dict.get(key)
+    print(npc_of_select.name)
+    return npc_of_select
