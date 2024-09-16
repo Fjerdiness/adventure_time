@@ -115,7 +115,7 @@ def get_item_name(dict_type: str) -> str:
     if item_dict is not None:
         return random.choice(list(item_dict.keys()))
     else:
-        raise ValueError(f"Dictionary for dict_type '{dict_type}' not found.")
+        raise ValueError(f"Dictionary for '{dict_type}' not found.")
 
 def get_item(dict_type: str):
     key = get_item_name(dict_type)
@@ -126,7 +126,7 @@ def get_item(dict_type: str):
         print(item_of_select)
         return item_of_select
     else:
-        print(f"Dictionary for dict_type '{dict_type}' not found.")
+        print(f"Dictionary for '{dict_type}' not found.")
         return None
     
 def get_treasures() -> list[str, int, str]:
@@ -138,10 +138,15 @@ def get_treasures() -> list[str, int, str]:
             get_item("potion"),
             get_item("gold"),
         ]
-    elif 25 < probability <= 75:
+    elif 50 < probability <= 75:
          print("Not so great, but OK success")
          return [
             get_item("potion"),
+            get_item("gold"),
+        ]
+    elif 25 < probability <= 50:
+         print("Not so great, but OK success")
+         return [
             get_item("gold"),
         ]
     else:

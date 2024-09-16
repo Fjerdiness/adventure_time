@@ -44,8 +44,8 @@ You moved {item_to_move} to hand.
 
 def check_inventory() -> None:
     print("\nList of items in your inventory: ")
-    for name, item in inventory_dict.items():
-        print(f"{name}: {item}")
+    for item in inventory_dict.items():
+        print(f"{item}")
 
 def do_smthng_with_inventory() -> str:
     input: str = input(f"""Do you want to do something in inventory? 
