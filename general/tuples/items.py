@@ -1,5 +1,6 @@
 import random
 import sys
+from typing import Optional
 
 from general import actions
 from general import stats
@@ -169,14 +170,18 @@ def get_item(dict_type: str):
     
     if dict_to_use is not None:
         item_of_select = dict_to_use.get(key)
-        print(item_of_select)
+        # print(item_of_select)
         return item_of_select
     else:
         print(f"Dictionary for '{dict_type}' not found.")
         return None
     
-def get_treasures() -> list[str, int, str]:
-    probability = stats.stats_dict['luck'].amount_of_points_in * 4 + random.randint(0, 100)
+def get_treasures(probability: Optional[int] = None) -> list[str, int, str]:
+    if not probability == None:
+        probability = probability
+    else:
+        probability = stats.stats_dict['luck'].amount_of_points_in * 4 + random.randint(0, 100)
+
     if 75 < probability <= 100:
         print("Great success")
         return [

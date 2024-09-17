@@ -1,4 +1,6 @@
 import sys
+from general import npcs
+
 from . import inventory, locations
 
 
@@ -16,6 +18,7 @@ actions_dict = {
     "south": Actions("south"),
     "inventory": Actions("inventory"),
     "stop": Actions("stop"),
+    "attack":Actions("attack")
 }
 
 yes_no_dict = {
@@ -50,6 +53,9 @@ def process_user_input(where_to):
             location = locations.select_location()
             locations.whats_around_you(location)
             locations.is_should_search()
+        elif where_to == actions_dict["attack"].name:
+            npc_name = npcs.get_npc_name()
+            npcs.npc_fight(npcs.npc_dict[npc_name])
         elif where_to == "stop":
             print(f"Bye-bye! Have a nice day!")
             sys.exit()
