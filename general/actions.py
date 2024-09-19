@@ -4,7 +4,7 @@ from general import npcs
 from . import inventory, locations
 
 LOCATION_LIST = locations.select_three_random_locations()
-current_location = None
+CURRENT_LOCATION = None
 
 class Actions:
     def __init__(self, name: str) -> None:
@@ -38,7 +38,7 @@ def input_to_play():
 def what_to_do() -> str:
         global LOCATION_LIST
         while True:
-            user_input = str(input(f"Where do you wanna go? {LOCATION_LIST} or {list(actions_dict.keys())} "))
+            user_input = str(input(f"Where do you wanna go? {LOCATION_LIST} or {list(actions_dict.keys())} ")).strip()
             if user_input in LOCATION_LIST or user_input in actions_dict.keys():
                 return user_input
             else:
@@ -46,29 +46,27 @@ def what_to_do() -> str:
 
 def process_user_input(where_to):
         global LOCATION_LIST
-        global current_location
+        global CURRENT_LOCATION
         if where_to == actions_dict["inventory"].name:
             inventory.check_inventory()
         elif where_to in LOCATION_LIST:
             print(locations.locations_dict[where_to])
-            current_location = locations.locations_dict[where_to]
+            CURRENT_LOCATION = locations.locations_dict[where_to]
             locations.is_should_search()
         elif where_to == actions_dict["attack"].name:
-            try:
-                npc = npcs.get_npc(current_location.npc.name)
+            if hasattr(CURRENT_LOCATION, 'npc') and CURRENT_LOCATION.npc:
+                npc = npcs.get_npc(CURRENT_LOCATION.npc.name)
                 is_npc_dead = npcs.npc_fight(npcs.npc_dict[npc.name])
-                current_location = update_npc_location_list(current_location.name, is_npc_dead)
-            except AttributeError: print("There is no one to fight with!")
+                CURRENT_LOCATION = update_npc_location_list(CURRENT_LOCATION.name, is_npc_dead)
+            else:
+                print("There is no one to fight with!")
         elif where_to == "stop":
             print(f"Bye-bye! Have a nice day!")
             sys.exit()
-        else:
-            print("Invalid action, please retry")
-            process_user_input()
 
 def update_npc_location_list(where_to, is_npc_dead):
     where_to = where_to.lower()
-    if is_npc_dead == True and where_to in LOCATION_LIST:
+    if is_npc_dead and where_to in LOCATION_LIST:
         current_location = locations.locations_dict[where_to]
         new_location = locations.Locations(
                     name=current_location.name,
