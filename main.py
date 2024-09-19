@@ -6,7 +6,7 @@ from general import stats
 
 def main():
     actions.input_to_play()
-    stats.set_stats()
+    stats.set_unmodifable_stats()
     stats.show_stats()
     while True:
         where_to = actions.what_to_do()

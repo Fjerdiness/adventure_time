@@ -1,6 +1,10 @@
 MAX_SKILL_VALUE = 10
 MIN_SKILL_VALUE = 0
 SKILL_POINTS = 15
+DEFAULT_HP = 200
+DEFAULT_MP = 50
+DEFAULT_AP = 0
+DEFAULT_NAME = "Player"
 
 class Stats:
 
@@ -12,6 +16,18 @@ class Stats:
     def __repr__(self):
         return f"{self.amount_of_points_in} ({self.description})"
     
+class Character():
+    """Character stats, like HP, MP, Level, reputation, etc"""
+    def __init__(self, name: str, player_hp: int, player_mp: int, player_lvl: int, player_armor_points: int):
+        self.name = name
+        self.player_hp = player_hp
+        self.player_mp = player_mp
+        self.player_lvl = player_lvl
+        self.player_armor_points = player_armor_points
+
+    def __repr__(self):
+        return f"Player name: {self.name.capitalize()}, HP: {self.player_hp}, MP: {self.player_mp}, LVL: {self.player_lvl}, Armor: {self.player_armor_points}"
+    
 stats_dict = {
     "luck": Stats("Luck", MIN_SKILL_VALUE, "Amount of gold, potions, critical damages etc"),
     "strength": Stats("Strength", MIN_SKILL_VALUE, "Damage from weapon and HP"),
@@ -19,7 +35,16 @@ stats_dict = {
     "agility": Stats("Agility", MIN_SKILL_VALUE, "Lowering damage taken")
 }
 
-def set_stats() -> int:
+player_hp = (DEFAULT_HP + (stats_dict["strength"].amount_of_points_in * 10))
+player_mp = (DEFAULT_MP + (stats_dict["intelligence"].amount_of_points_in * 20))
+player_armor_points = (DEFAULT_AP + (stats_dict["agility"].amount_of_points_in * 2))
+
+character_dict = {
+    "player": Character(DEFAULT_NAME, player_hp, player_mp, 1, player_armor_points)
+}  
+
+
+def set_unmodifable_stats() -> int:
     skill_points = SKILL_POINTS
     max_skill_value = MAX_SKILL_VALUE
     print(stats_dict)  # Show the initial stats

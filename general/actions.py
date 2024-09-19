@@ -1,5 +1,6 @@
 import sys
 from general import npcs
+from general import stats
 
 from . import inventory, locations
 
@@ -16,7 +17,8 @@ class Actions:
 actions_dict = {
     "inventory": Actions("inventory"),
     "stop": Actions("stop"),
-    "attack":Actions("attack")
+    "attack": Actions("attack"),
+    "character": Actions("character"),
 }
 
 yes_no_dict = {
@@ -60,7 +62,9 @@ def process_user_input(where_to):
                 CURRENT_LOCATION = update_npc_location_list(CURRENT_LOCATION.name, is_npc_dead)
             else:
                 print("There is no one to fight with!")
-        elif where_to == "stop":
+        elif where_to == actions_dict["character"].name:
+            print(stats.character_dict["player"])
+        elif where_to == actions_dict["stop"].name:
             print(f"Bye-bye! Have a nice day!")
             sys.exit()
 
