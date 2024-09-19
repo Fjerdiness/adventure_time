@@ -2,42 +2,60 @@ import random
 import sys
 
 from general.tuples import items
-from . import actions, stats, inventory
+from . import actions, stats, npcs
 
 class Locations:
 
-    def __init__(self, name: str, enemies: str, description: str, treasures_list: list[str, int, str]) -> None:
+    def __init__(self, name: str, npc, description: str) -> None:
         self.name = name
-        self.enemies = enemies
+        self.npc = npc
         self.description = description
-        self.treasures_list = treasures_list
 
     def __repr__(self) -> str:
-        treasures_str = ', '.join(f"{name} (Quantity: {quantity}, Type: {type_})" for name, quantity, type_ in self.treasures_list)
-        return f"Location(name={self.name}, enemies={self.enemies}, description={self.description}, treasures=[{treasures_str}])"
+        if self.npc is not None:
+            return f"You arrived at {self.name}, {self.description}. And {self.npc.name} is standing in front of you."
+        else:
+            return f"You arrived at {self.name}, {self.description}. There is no one here."
 
-# sword = Weapons("Sword", 10, "Sharp")
     
 locations_dict = {
-    "forest" : Locations("Forest", "Orc", "its dark here", None),
-    "castle" : Locations("Castle", "Old guard", "you can feel thousands of years of history here", None),
-    "dungeon" : Locations("Dungeon", "Dragon", "skeleton in chain is looking at you", None),
-    "house" : Locations("House", None, "just cozy house with nothing really useful inside of it", None),
-    "river" : Locations("River", "Siren", "beatiful song is calling you to swim in waters", None),
-    "lake" : Locations("Lake", "Merman", "you can fish here if you want", None),
+    "forest": Locations("Forest", npcs.get_random_npc(), "It's dark here, the trees whisper secrets."),
+    "castle": Locations("Castle", npcs.get_random_npc(), "You can feel thousands of years of history here."),
+    "dungeon": Locations("Dungeon", npcs.get_random_npc(), "A skeleton in chains is looking at you."),
+    "house": Locations("House", None, "Just a cozy house with nothing really useful inside of it."),
+    "river": Locations("River", npcs.get_random_npc(), "A beautiful song is calling you to swim in the waters."),
+    "lake": Locations("Lake", npcs.get_random_npc(), "You can fish here if you want."),
+    "mountain": Locations("Mountain", None, "The peak is shrouded in clouds, and the air is thin."),
+    "cave": Locations("Cave", npcs.get_random_npc(), "Echoes of dripping water create a haunting melody."),
+    "village": Locations("Village", npcs.get_random_npc(), "A quaint village where everyone knows each other."),
+    "ruins": Locations("Ruins", None, "Ancient stones tell the tale of a lost civilization."),
+    "swamp": Locations("Swamp", npcs.get_random_npc(), "The air is thick with mist and the smell of decay."),
+    "beach": Locations("Beach", None, "Soft sands stretch as far as the eye can see, with gentle waves lapping at the shore."),
+    "temple": Locations("Temple", npcs.get_random_npc(), "An ancient temple filled with mysterious relics."),
+    "hill": Locations("Hill", None, "From here, you can see the entire valley spread out below."),
+    "city_square": Locations("City Square", npcs.get_random_npc(), "A bustling area filled with merchants and townsfolk."),
+    "tavern": Locations("Tavern", npcs.get_random_npc(), "The smell of ale and roasting meat fills the air."),
+    "plains": Locations("Plains", None, "Wide open fields stretch in every direction, a gentle breeze rustling the grass."),
+    "fortress": Locations("Fortress", npcs.get_random_npc(), "A stronghold that has withstood the test of time."),
+    "glen": Locations("Glen", None, "A hidden glen filled with vibrant flowers and chirping birds."),
+    "graveyard": Locations("Graveyard", npcs.get_random_npc(), "The air is heavy with the memories of the past."),
+    "marketplace": Locations("Marketplace", npcs.get_random_npc(), "Vendors shout their wares, and the smell of spices fills the air."),
+    "crystal_cave": Locations("Crystal Cave", None, "Glittering crystals reflect the light in mesmerizing patterns."),
+    "meadow": Locations("Meadow", npcs.get_random_npc(), "A sunlit meadow where butterflies dance among wildflowers."),
+    "snowy_tundra": Locations("Snowy Tundra", None, "Endless white stretches before you, cold and desolate."),
+    "abandoned_ship": Locations("Abandoned Ship", npcs.get_random_npc(), "The old ship creaks, telling tales of adventures long past."),
+    "sacred_grove": Locations("Sacred Grove", npcs.get_random_npc(), "A tranquil grove where the air feels charged with magic."),
+    "hidden_path": Locations("Hidden Path", None, "A narrow path winding through thick underbrush, leading who knows where."),
+    "fishing_hole": Locations("Fishing Hole", npcs.get_random_npc(), "A peaceful spot perfect for casting a line and relaxing."),
+    "burnt_forest": Locations("Burnt Forest", None, "Charred remains tell the tale of a fierce fire that swept through."),
+    "whirlpool": Locations("Whirlpool", npcs.get_random_npc(), "A swirling vortex in the water, rumored to lead to another realm."),
 }
 
-def select_location() -> str:
-    location = random.choice(list(locations_dict.keys()))
+
+def select_three_random_locations() -> list[str]:
+    location = [random.choice(list(locations_dict.keys())) for _ in range(3)] 
     return location
 
-def whats_around_you(user_input: str) -> None:
-    if user_input in locations_dict:
-        location = locations_dict[user_input]
-        print(f"""You're at {location.name} {location.description}
-""")
-    else:
-        print("Location not found.")
 
 def is_should_search() -> None:
     input_str = input(f"Do you wanna to search here for item? {list(actions.yes_no_dict.keys())} ")

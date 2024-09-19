@@ -1,6 +1,7 @@
-from general import npcs
+
 from general import actions
 from general import stats
+
 
 
 def main():

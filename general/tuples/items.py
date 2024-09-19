@@ -202,10 +202,9 @@ def get_treasures(probability: Optional[int] = None) -> list[str, int, str]:
         ]
     else:
         print(f"Critical failure and now you are dead")
-        sys.exit()
+        # sys.exit()
 
 
 def can_you_find_an_item() -> bool:
     items_to_find = get_treasures()
-    print(items_to_find)
     inventory.add_items_to_inventory(items_to_find)

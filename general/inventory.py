@@ -20,12 +20,15 @@ You took {item_to_take} in hand.
     
 def add_items_to_inventory(item_list: list) -> None:
     global gold_amount
-    for item in item_list:
-        # Directly add the Item object to the dictionary
-            item_name = item.name
-            inventory_dict[item_name] = item
-            print(f"\n{item_name} now is stored in your inventory")
-    check_inventory()
+    if (not item_list == None):
+        for item in item_list:
+            # Directly add the Item object to the dictionary
+                item_name = item.name
+                inventory_dict[item_name] = item
+                print(f"\n{item_name} now is stored in your inventory")
+        check_inventory()
+    else:
+        print("Nothing is here")
             
 def move_item_to_hotbar(item_to_move: str) -> None: 
     try:

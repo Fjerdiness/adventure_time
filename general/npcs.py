@@ -1,12 +1,12 @@
 
 import random
-from general import actions
+from typing import Optional
 from general.tuples import items
 from general import stats
 from general import inventory
 
 
-class NPCs:
+class NPC:
     def __init__(self, 
                  name: str, 
                  hit_points: int, 
@@ -23,9 +23,17 @@ class NPCs:
         self.hostility = hostility
         self.items = items
 
+    def __repr__(self) -> str:
+        return (f"NPC(Name: {self.name}, "
+                f"Hit Points: {self.hit_points}, "
+                f"Mana Points: {self.mana_points}, "
+                f"Armor: {self.armor}, "
+                f"Hostility: {self.hostility}, "
+                f"Items: {self.items})")
+
 # Define the NPCs
 npc_dict = {
-    'Gorath': NPCs(
+    'Gorath': NPC(
         name="Gorath",
         hit_points=120,
         mana_points=30,
@@ -33,7 +41,7 @@ npc_dict = {
         hostility=80,
         items=[items.get_item('weapon'), items.get_item('armor')]
     ),
-    'Eldara': NPCs(
+    'Eldara': NPC(
         name="Eldara",
         hit_points=100,
         mana_points=50,
@@ -41,7 +49,7 @@ npc_dict = {
         hostility=30,
         items=[items.get_item('weapon')]
     ),
-    'Thorin': NPCs(
+    'Thorin': NPC(
         name="Thorin",
         hit_points=150,
         mana_points=10,
@@ -49,7 +57,7 @@ npc_dict = {
         hostility=60,
         items=[items.get_item('weapon'), items.get_item('armor'), items.get_item('armor'), items.get_item('armor')]
     ),
-    'Lyra': NPCs(
+    'Lyra': NPC(
         name="Lyra",
         hit_points=90,
         mana_points=70,
@@ -59,15 +67,24 @@ npc_dict = {
     ),
 }
 
-def get_npc_name() -> str:
-    return random.choice(list(npc_dict.keys()))
+def get_random_npc(npc_name = random.choice(list(npc_dict.keys()))) -> NPC | str:
+    # Check if the specified NPC name exists in the npc_dict
+    if npc_name in npc_dict:
+        return npc_dict[npc_name]
+    else:
+        print(f"NPC '{npc_name}' not found.")
+        return None  # or raise an exception
+    
 
-def get_npc():
-    key = get_npc_name()
-    npc = npc_dict.get(key)
-    return npc
+def get_npc(npc_name: str)-> NPC | str:
+    # Check if the specified NPC name exists in the npc_dict
+    if npc_name in npc_dict:
+        return npc_dict[npc_name]
+    else:
+        print(f"NPC '{npc_name}' not found.")
+        return None  # or raise an exception
 
-def get_npc_armor_points(npc: NPCs) -> int:
+def get_npc_armor_points(npc: NPC) -> int:
     npc_ap_points = npc.armor
     for item in npc.items:
         if isinstance(item, items.Armor):
@@ -75,7 +92,7 @@ def get_npc_armor_points(npc: NPCs) -> int:
     return npc_ap_points
 
 
-def player_attack_npc(npc: NPCs, weapon_name: str) -> int:
+def player_attack_npc(npc: NPC, weapon_name: str) -> int:
     if weapon_name is not None:
         weapon_dmg = weapon_name.damage() if callable(getattr(weapon_name, 'damage', None)) else weapon_name.damage
     else:
@@ -91,7 +108,7 @@ def player_attack_npc(npc: NPCs, weapon_name: str) -> int:
     print(f"Player attacks {npc.name} (AP: {npc_armor_points}) with {weapon_name} for {effective_damage} damage. {npc.name} has {npc.hit_points} HP left.")
     return npc.hit_points
 
-def npc_fight(npc: NPCs) -> None:
+def npc_fight(npc: NPC) -> bool:
     npc_hp = npc.hit_points
     weapon_name = items.get_item('weapon')
     while True:
@@ -99,4 +116,4 @@ def npc_fight(npc: NPCs) -> None:
         if npc_hp <= 0:
             print(f"Player won! {npc.name} is defeated.")
             inventory.add_items_to_inventory(npc.items)
-            break
+            return True
