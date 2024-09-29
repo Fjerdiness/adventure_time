@@ -1,3 +1,5 @@
+import tkinter as tk
+from tkinter import ttk
 MAX_SKILL_VALUE = 10
 MIN_SKILL_VALUE = 0
 SKILL_POINTS = 15
@@ -44,27 +46,40 @@ character_dict = {
 }  
 
 
-def set_unmodifable_stats() -> int:
+def set_character_stats(window) -> int:
     skill_points = SKILL_POINTS
     max_skill_value = MAX_SKILL_VALUE
-    print(stats_dict)  # Show the initial stats
-    
-    for key, value in stats_dict.items(): 
-        while True:
+
+    frame = tk.Frame(window, bg="lightgray")
+    frame.pack(padx=10, pady=10, fill=tk.BOTH, expand=True)
+
+    def submit_points():
+        nonlocal skill_points
+        for key, value in stats_dict.items():
             try:
-                skill_point_input = int(input(f"Enter the amount of skill points for {value.name} ({value.description}). {skill_points} skill points are available: "))
+                skill_point_input = int(skill_entries[key].get())
+                
                 if 0 <= skill_point_input <= skill_points and 0 <= skill_point_input <= max_skill_value:
                     stats_dict[key] = Stats(value.name, skill_point_input, value.description)
                     skill_points -= skill_point_input
-                    if skill_points < 0:
-                        print("Not enough skill points available.")
-                        break
-                    max_skill_value = skill_points
-                    break
                 else:
                     print(f"Please input a value between 0 and {min(skill_points, max_skill_value)}.")
             except ValueError:
                 print("Invalid input. Please enter an integer value.")
+
+        show_stats()
+
+    skill_entries = {}
+    for key, value in stats_dict.items():
+        label = tk.Label(frame, text=f"Enter points for {value.name} ({value.description}):")
+        label.pack()
+        
+        skill_entry = tk.Entry(frame)
+        skill_entry.pack()
+        skill_entries[key] = skill_entry
+
+    submit_button = tk.Button(frame, text="Submit Skill Points", command=submit_points)
+    submit_button.pack()
 
 def show_stats(): 
     print("So, your final stats are:")

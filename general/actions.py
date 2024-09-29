@@ -1,6 +1,9 @@
 import sys
 from general import npcs
 from general import stats
+import tkinter as tk
+from tkinter import ttk
+import gui
 
 from . import inventory, locations
 
@@ -26,16 +29,12 @@ yes_no_dict = {
      "no": Actions("no"),
 }
 
-def input_to_play():
-    user_input = str(input(f"Hello. Do you wanna to play? {list(yes_no_dict.keys())} ")).lower().strip()
-    if user_input == yes_no_dict["yes"].name:
-        print("Nice, lets go!")
-    elif user_input == yes_no_dict["no"].name:
-        print("As you wish")
-        sys.exit()
-    else:
-        print("wrong input, retry")
-        input_to_play()
+def input_to_play(window):
+    button_yes = tk.Button(window, text="Yes", command=lambda: (print("Nice, lets go!"), gui.clear_window(window), stats.set_character_stats(window)))
+    button_no = tk.Button(window, text="No", command=lambda: (print("As you wish"), sys.exit()))
+    button_yes.pack(pady=10)
+    button_no.pack(pady=10)
+    # user_input = str(input(f"Hello. Do you wanna to play? {list(yes_no_dict.keys())} ")).lower().strip()
 
 def what_to_do() -> str:
         global LOCATION_LIST
