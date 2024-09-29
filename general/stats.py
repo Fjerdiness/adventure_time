@@ -1,5 +1,9 @@
 import tkinter as tk
 from tkinter import ttk
+from tkinter import font
+
+from general import actions
+import gui
 MAX_SKILL_VALUE = 10
 MIN_SKILL_VALUE = 0
 SKILL_POINTS = 15
@@ -50,7 +54,8 @@ def set_character_stats(window) -> int:
     skill_points = SKILL_POINTS
     max_skill_value = MAX_SKILL_VALUE
 
-    frame = tk.Frame(window, bg="lightgray")
+    frame = tk.Frame(window, bg='lightblue')
+    # print(frame.configure().keys())
     frame.pack(padx=10, pady=10, fill=tk.BOTH, expand=True)
 
     def submit_points():
@@ -66,22 +71,27 @@ def set_character_stats(window) -> int:
                     print(f"Please input a value between 0 and {min(skill_points, max_skill_value)}.")
             except ValueError:
                 print("Invalid input. Please enter an integer value.")
-
-        show_stats()
+        gui.clear_window(frame)
+        show_stats(frame)
 
     skill_entries = {}
     for key, value in stats_dict.items():
-        label = tk.Label(frame, text=f"Enter points for {value.name} ({value.description}):")
+        label = tk.Label(frame, text=f"Enter points for {value.name} ({value.description})", pady=5)
         label.pack()
         
         skill_entry = tk.Entry(frame)
         skill_entry.pack()
         skill_entries[key] = skill_entry
 
-    submit_button = tk.Button(frame, text="Submit Skill Points", command=submit_points)
+    submit_button = tk.Button(frame, text="Submit Skill Points", command=submit_points, pady=5)
     submit_button.pack()
 
-def show_stats(): 
-    print("So, your final stats are:")
-    for key, value in stats_dict.items():
-        print(f"{key.capitalize()}: {value.amount_of_points_in} ({value.description})")
+def show_stats(window):
+    # Create a formatted string from stats_dict
+    stats_text = "\n".join([f"{key.capitalize()}: {value.amount_of_points_in} ({value.description})" for key, value in stats_dict.items()])
+    custom_font = font.Font(family="Helvetica", size=12, weight="bold")
+    label = tk.Label(window, text=stats_text, wraplength=500, justify="left", font=custom_font)
+    
+    label.pack(pady=20)
+    button = tk.Button(window, text="Let`s go!", command=lambda:(gui.clear_window(window), actions.what_to_do(window)))
+    button.pack()

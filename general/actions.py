@@ -34,16 +34,23 @@ def input_to_play(window):
     button_no = tk.Button(window, text="No", command=lambda: (print("As you wish"), sys.exit()))
     button_yes.pack(pady=10)
     button_no.pack(pady=10)
-    # user_input = str(input(f"Hello. Do you wanna to play? {list(yes_no_dict.keys())} ")).lower().strip()
 
-def what_to_do() -> str:
+def what_to_do(window) -> str:
         global LOCATION_LIST
-        while True:
-            user_input = str(input(f"Where do you wanna go? {LOCATION_LIST} or {list(actions_dict.keys())} ")).strip()
-            if user_input in LOCATION_LIST or user_input in actions_dict.keys():
-                return user_input
-            else:
-                print("Wrong input. Retry.")
+        label = tk.Label(window, text=f"Where do you wanna go? {LOCATION_LIST} or {list(actions_dict.keys())} ")
+        label.pack()
+        
+        entry = tk.Entry(window)
+        entry.pack()
+        # user_input = str(entry.get())
+        
+        submit_button = tk.Button(window, text="Submit", command=lambda: (process_user_input(entry.get())))
+        submit_button.pack()
+        
+        # if user_input in LOCATION_LIST or user_input in actions_dict.keys():
+        #     process_user_input(user_input)
+        # else:
+        #     print("Wrong input. Retry.")
 
 def process_user_input(where_to):
         global LOCATION_LIST
