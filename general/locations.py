@@ -58,11 +58,18 @@ def select_three_random_locations() -> list[str]:
 
 
 def is_should_search(window) -> None:
-    input_str = tk.Label(window, text=f"Do you wanna to search here for item? {list(actions.yes_no_dict.keys())}")
-    if input_str == actions.yes_no_dict["yes"].name:
-        items.can_you_find_an_item()
-    else: 
-        print("Ok, moving further then")
+    input_label = tk.Label(window, text=f"Do you wanna to search here for item? {list(actions.yes_no_dict.keys())}")
+    input_label.pack()
+    search_btn = tk.Button(window, text="Yes, I wanna search for an item", command=lambda: (items.can_you_find_an_item(), clear_btns(button_list), input_label.destroy()))
+    no_search_btn = tk.Button(window, text="No, lets skip searching", command=lambda:(print("Ok, moving further then"), clear_btns(button_list), input_label.destroy()))
+    button_list = [search_btn, no_search_btn]
+    search_btn.pack()
+    no_search_btn.pack()
+
+def clear_btns(button_list: list):
+    for button in button_list:
+        button.destroy()
+        
 
 def is_sword_here() -> bool:
     probability = stats.stats_dict['luck'].amount_of_points_in * 2 + random.randint(0, 100)
