@@ -1,6 +1,6 @@
 import random
 import sys
-
+import tkinter as tk
 from general.tuples import items
 from . import actions, stats, npcs
 
@@ -57,8 +57,8 @@ def select_three_random_locations() -> list[str]:
     return location
 
 
-def is_should_search() -> None:
-    input_str = input(f"Do you wanna to search here for item? {list(actions.yes_no_dict.keys())} ")
+def is_should_search(window) -> None:
+    input_str = tk.Label(window, text=f"Do you wanna to search here for item? {list(actions.yes_no_dict.keys())}")
     if input_str == actions.yes_no_dict["yes"].name:
         items.can_you_find_an_item()
     else: 

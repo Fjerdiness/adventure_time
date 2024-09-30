@@ -44,7 +44,7 @@ def what_to_do(window) -> str:
         entry.pack()
         # user_input = str(entry.get())
         
-        submit_button = tk.Button(window, text="Submit", command=lambda: (process_user_input(entry.get())))
+        submit_button = tk.Button(window, text="Submit", command=lambda: (process_user_input(entry.get(), window)))
         submit_button.pack()
         
         # if user_input in LOCATION_LIST or user_input in actions_dict.keys():
@@ -52,7 +52,7 @@ def what_to_do(window) -> str:
         # else:
         #     print("Wrong input. Retry.")
 
-def process_user_input(where_to):
+def process_user_input(where_to, window):
         global LOCATION_LIST
         global CURRENT_LOCATION
         if where_to == actions_dict["inventory"].name:
@@ -60,7 +60,7 @@ def process_user_input(where_to):
         elif where_to in LOCATION_LIST:
             print(locations.locations_dict[where_to])
             CURRENT_LOCATION = locations.locations_dict[where_to]
-            locations.is_should_search()
+            locations.is_should_search(window)
         elif where_to == actions_dict["attack"].name:
             if hasattr(CURRENT_LOCATION, 'npc') and CURRENT_LOCATION.npc:
                 npc = npcs.get_npc(CURRENT_LOCATION.npc.name)

@@ -14,9 +14,9 @@ class GameApp:
         actions.input_to_play(self.window)
 
     def process_input(self):
-        where_to = actions.what_to_do(root)
+        actions.what_to_do(self.window)
         
-        self.entry.delete(0, tk.END)
+        # self.entry.delete(0, tk.END)
 
 if __name__ == "__main__":
     root = tk.Tk()
