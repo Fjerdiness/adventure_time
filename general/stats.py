@@ -50,11 +50,11 @@ character_dict = {
 }  
 
 
-def set_character_stats(window) -> int:
+def set_character_stats(main_frame, secondary_frame) -> int:
     skill_points = SKILL_POINTS
     max_skill_value = MAX_SKILL_VALUE
 
-    frame = tk.Frame(window, bg='lightblue')
+    frame = tk.Frame(main_frame, bg='lightblue')
     # print(frame.configure().keys())
     frame.pack(padx=10, pady=10, fill=tk.BOTH, expand=True)
 
@@ -72,7 +72,7 @@ def set_character_stats(window) -> int:
             except ValueError:
                 print("Invalid input. Please enter an integer value.")
         gui.clear_window(frame)
-        show_stats(frame)
+        show_stats(frame, secondary_frame)
 
     skill_entries = {}
     for key, value in stats_dict.items():
@@ -86,12 +86,12 @@ def set_character_stats(window) -> int:
     submit_button = tk.Button(frame, text="Submit Skill Points", command=submit_points, pady=5)
     submit_button.pack()
 
-def show_stats(window):
+def show_stats(main_frame, secondary_frame):
     # Create a formatted string from stats_dict
     stats_text = "\n".join([f"{key.capitalize()}: {value.amount_of_points_in} ({value.description})" for key, value in stats_dict.items()])
     custom_font = font.Font(family="Helvetica", size=12, weight="bold")
-    label = tk.Label(window, text=stats_text, wraplength=500, justify="left", font=custom_font)
+    label = tk.Label(main_frame, text=stats_text, wraplength=500, justify="left", font=custom_font)
     
     label.pack(pady=20)
-    button = tk.Button(window, text="Let`s go!", command=lambda:(gui.clear_window(window), actions.what_to_do(window)))
+    button = tk.Button(main_frame, text="Let`s go!", command=lambda:(gui.clear_window(main_frame), actions.what_to_do(main_frame, secondary_frame)))
     button.pack()

@@ -1,6 +1,7 @@
 import random
 import sys
 from typing import Optional
+import tkinter as tk
 
 from general import actions
 from general import stats
@@ -176,13 +177,19 @@ def get_item(dict_type: str):
         print(f"Dictionary for '{dict_type}' not found.")
         return None
     
-def get_treasures(probability: Optional[int] = None) -> list[str, int, str]:
+def get_treasures(secondary_frame, probability: Optional[int] = None) -> list[str, int, str]:
     if not probability == None:
         probability = probability
     else:
         probability = stats.stats_dict['luck'].amount_of_points_in * 4 + random.randint(0, 100)
 
     if 75 < probability <= 100:
+        items_dict = {
+            get_item("weapon"),
+            get_item("potion"),
+            get_item("gold")
+        }
+        # tk.Label(secondary_frame, text=f"You`ve found: {items_dict}", wraplength=180).pack()
         print("Great success")
         return [
             get_item("weapon"),
@@ -205,6 +212,6 @@ def get_treasures(probability: Optional[int] = None) -> list[str, int, str]:
         # sys.exit()
 
 
-def can_you_find_an_item() -> bool:
-    items_to_find = get_treasures()
-    inventory.add_items_to_inventory(items_to_find)
+def can_you_find_an_item(secondary_frame) -> bool:
+    items_to_find = get_treasures(secondary_frame)
+    inventory.add_items_to_inventory(items_to_find, secondary_frame)

@@ -29,22 +29,22 @@ yes_no_dict = {
      "no": Actions("no"),
 }
 
-def input_to_play(window):
-    button_yes = tk.Button(window, text="Yes", command=lambda: (print("Nice, lets go!"), gui.clear_window(window), stats.set_character_stats(window)))
-    button_no = tk.Button(window, text="No", command=lambda: (print("As you wish"), sys.exit()))
+def input_to_play(main_frame, secondary_frame):
+    button_yes = tk.Button(main_frame, text="Yes", command=lambda: (print("Nice, lets go!"), gui.clear_window(main_frame), stats.set_character_stats(main_frame, secondary_frame)))
+    button_no = tk.Button(main_frame, text="No", command=lambda: (print("As you wish"), sys.exit()))
     button_yes.pack(pady=10)
     button_no.pack(pady=10)
 
-def what_to_do(window) -> str:
+def what_to_do(main_frame, secondary_frame) -> str:
         global LOCATION_LIST
-        label = tk.Label(window, text=f"Where do you wanna go? {LOCATION_LIST} or {list(actions_dict.keys())} ")
+        label = tk.Label(main_frame, text=f"Where do you wanna go? {LOCATION_LIST} or {list(actions_dict.keys())} ")
         label.pack()
         
-        entry = tk.Entry(window)
+        entry = tk.Entry(main_frame)
         entry.pack()
         # user_input = str(entry.get())
         
-        submit_button = tk.Button(window, text="Submit", command=lambda: (process_user_input(entry.get(), window)))
+        submit_button = tk.Button(main_frame, text="Submit", command=lambda: (process_user_input(entry.get(), main_frame, secondary_frame)))
         submit_button.pack()
         
         # if user_input in LOCATION_LIST or user_input in actions_dict.keys():
@@ -52,7 +52,7 @@ def what_to_do(window) -> str:
         # else:
         #     print("Wrong input. Retry.")
 
-def process_user_input(where_to, window):
+def process_user_input(where_to, window, secondary_frame):
         global LOCATION_LIST
         global CURRENT_LOCATION
         if where_to == actions_dict["inventory"].name:
@@ -60,7 +60,7 @@ def process_user_input(where_to, window):
         elif where_to in LOCATION_LIST:
             print(locations.locations_dict[where_to])
             CURRENT_LOCATION = locations.locations_dict[where_to]
-            locations.is_should_search(window)
+            locations.is_should_search(window, secondary_frame)
         elif where_to == actions_dict["attack"].name:
             if hasattr(CURRENT_LOCATION, 'npc') and CURRENT_LOCATION.npc:
                 npc = npcs.get_npc(CURRENT_LOCATION.npc.name)

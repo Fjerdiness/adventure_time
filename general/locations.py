@@ -57,10 +57,10 @@ def select_three_random_locations() -> list[str]:
     return location
 
 
-def is_should_search(window) -> None:
+def is_should_search(window, secondary_frame) -> None:
     input_label = tk.Label(window, text=f"Do you wanna to search here for item? {list(actions.yes_no_dict.keys())}")
     input_label.pack()
-    search_btn = tk.Button(window, text="Yes, I wanna search for an item", command=lambda: (items.can_you_find_an_item(), clear_btns(button_list), input_label.destroy()))
+    search_btn = tk.Button(window, text="Yes, I wanna search for an item", command=lambda: (items.can_you_find_an_item(secondary_frame), clear_btns(button_list), input_label.destroy()))
     no_search_btn = tk.Button(window, text="No, lets skip searching", command=lambda:(print("Ok, moving further then"), clear_btns(button_list), input_label.destroy()))
     button_list = [search_btn, no_search_btn]
     search_btn.pack()
